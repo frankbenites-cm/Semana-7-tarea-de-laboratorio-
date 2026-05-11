@@ -1,0 +1,74 @@
+import math
+
+
+def f(x):
+    return math.exp(x)
+
+
+def calcular_derivadas(x, h, precision):
+
+    # Redondeo de los valores de la función
+    fx_mas_h = round(f(x + h), precision)
+    fx_menos_h = round(f(x - h), precision)
+    fx = round(f(x), precision)
+
+    # Primera derivada (diferencia centrada)
+    f_primera = (fx_mas_h - fx_menos_h) / (2 * h)
+
+    # Segunda derivada (diferencia centrada)
+    f_segunda = (fx_mas_h - 2 * fx + fx_menos_h) / (h ** 2)
+
+    return f_primera, f_segunda
+
+
+# Configuración inicial
+x_val = 2
+pasos_h = [0.5, 0.1, 0.05, 0.01, 0.005, 0.001]
+
+# Valor exacto
+valor_exacto = math.exp(2)
+
+# Encabezado de la tabla
+print("=" * 150)
+
+print(f"{'h':<10} | "
+      f"{'f´(2) 6-dig':<18} | "
+      f"{'Error Abs 6':<18} | "
+      f"{'Error % 6':<15} | "
+      f"{'f´(2) 8-dig':<18} | "
+      f"{'Error Abs 8':<18} | "
+      f"{'Error % 8':<15}")
+
+print("=" * 150)
+
+# Bucle principal
+for h in pasos_h:
+
+    # Aproximación con 6 dígitos
+    f1_6, _ = calcular_derivadas(x_val, h, 6)
+
+    # Error absoluto
+    err_abs_6 = abs(valor_exacto - f1_6)
+
+    # Error porcentual
+    err_pct_6 = (err_abs_6 / valor_exacto) * 100
+
+    # Aproximación con 8 dígitos
+    f1_8, _ = calcular_derivadas(x_val, h, 8)
+
+    # Error absoluto
+    err_abs_8 = abs(valor_exacto - f1_8)
+
+    # Error porcentual
+    err_pct_8 = (err_abs_8 / valor_exacto) * 100
+
+    # Mostrar resultados
+    print(f"{h:<10} | "
+          f"{f1_6:<18.8f} | "
+          f"{err_abs_6:<18.8f} | "
+          f"{err_pct_6:<15.8f} | "
+          f"{f1_8:<18.8f} | "
+          f"{err_abs_8:<18.8f} | "
+          f"{err_pct_8:<15.8f}")
+
+print("=" * 150)
